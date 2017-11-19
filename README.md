@@ -22,7 +22,7 @@ setTimeout(() => {
 }, 2000);
 
 setTimeout(() => {
-	get('foo'); // undefined
+    get('foo'); // undefined
 }, 3000);
 ```
 
@@ -32,10 +32,9 @@ setTimeout(() => {
 npm test
 ```
 ```
-Storage
-    ✓ set and get object
-    ✓ expired after 3 seconds (3009ms)
-
-
-  2 passing (3s)
+✓ set and get object
+✓ expired after 3 seconds
+# tests 5
+# pass  5
+✓ ok
 ```

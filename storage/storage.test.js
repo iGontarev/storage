@@ -1,33 +1,31 @@
-import { LocalStorage } from 'node-localstorage';
-import { expect } from 'chai';
+import test from 'tape';
 import { get, set, remove } from './storage';
 
-global.localStorage = new LocalStorage('./');
+test('set and get object', (t) => {
+    set('foo', { a: null });
+    
+    t.deepEqual(get('foo'), { a: null });
+    
+    remove('foo');
+    
+    t.equal(get('foo'), undefined);
+    t.deepEqual(get('foo', { a: null }), { a: null });
 
-describe('Storage', () => {
-    it(`set and get object`, () => {
-        set('foo', { a: null });
-        expect(get('foo')).to.deep.equal({ a: null });
-        remove('foo');
-        expect(get('foo')).to.equal(undefined);
-        expect(get('foo', { a: null })).to.deep.equal({ a: null });
-    });
+    t.end();
+});
 
-    it(`expired after 3 seconds`, function(done) {
-        this.timeout(10000);
-        const expiredDate = new Date();
-        expiredDate.setTime(expiredDate.getTime() + 3 * 1000);
+test('expired after 3 seconds', (t) => {
+    const expiredDate = new Date();
+    expiredDate.setTime(expiredDate.getTime() + 3 * 1000);
 
-        set('foo', 'bar', expiredDate);
+    set('foo', 'bar', expiredDate);
 
-        setTimeout(() => {
-            expect(get('foo')).to.equal('bar');
-        }, 2000);
+    setTimeout(() => {
+        t.equal(get('foo'), 'bar');
+    }, 2000);
 
-        setTimeout(() => {
-            expect(get('foo')).to.equal(undefined);
-            done();
-        }, 3000);
-        
-    });
+    setTimeout(() => {
+        t.equal(get('foo'), undefined);
+        t.end();
+    }, 3000);
 });
