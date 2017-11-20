@@ -20,6 +20,9 @@
   "bugs": {
     "url": "https://github.com/iGontarev/storage/issues"
   },
+  "pre-commit": [
+    "lint"
+  ],
   "homepage": "https://github.com/iGontarev/storage#readme",
   "devDependencies": {
     "babel-core": "^6.26.0",
