@@ -5,7 +5,8 @@
   "main": "storage/index.js",
   "scripts": {
     "test": "node test.js",
-    "flow": "flow"
+    "flow": "flow",
+    "lint": "eslint ./storage --ext .js"
   },
   "repository": {
     "type": "git",
@@ -23,13 +24,18 @@
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-env": "^2.4.1",
+    "babel-eslint": "^8.0.2",
     "babel-preset-flow": "^6.23.0",
     "babelify": "^8.0.0",
     "browserify": "^14.5.0",
+    "eslint": "^4.11.0",
+    "eslint-plugin-flowtype": "^2.39.1",
     "faucet": "0.0.1",
     "flow-bin": "^0.59.0",
     "glob": "^7.1.2",
+    "pre-commit": "^1.2.2",
     "tape": "^4.8.0",
     "tape-run": "^3.0.0"
-  }
+  },
+  "dependencies": {}
 }

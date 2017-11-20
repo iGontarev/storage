@@ -1,15 +1,22 @@
-export function set(key, value, expiredDate) {
+// @flow
+
+type StorageDataType = {
+    value: any,
+    expired: string
+};
+
+export function set(key: string, value: any, expiredDate: ?Date): void {
     localStorage.setItem(key, makeDataRaw(value, expiredDate));
 }
 
-export function get(key, defaultValue) {
+export function get(key: string, defaultValue: any): any {
     const dataRaw = localStorage.getItem(key);
 
-    if (dataRaw === null) {
+    if (dataRaw === null || dataRaw === undefined) {
         return defaultValue;
     }
 
-    const data = parseData(dataRaw);
+    const data: StorageDataType = parseData(dataRaw);
 
     if (isExpired(data.expired)) {
         remove(key);
@@ -19,14 +26,14 @@ export function get(key, defaultValue) {
     return data.value;
 }
 
-export function remove(key) {
+export function remove(key: string): void {
     localStorage.removeItem(key);
 }
 
-function makeDataRaw(value, expiredDate) {
-    const expired = expiredDate === undefined
-        ? getDefaultExpired()
-        : expiredDate.toString();
+function makeDataRaw(value: any, expiredDate: ?Date): string {
+    const expired = expiredDate instanceof Date
+        ? expiredDate.toString()
+        : getDefaultExpired();
 
     return JSON.stringify({
         value,
@@ -34,8 +41,8 @@ function makeDataRaw(value, expiredDate) {
     })
 }
 
-function parseData(dataRaw) {
-    const data = JSON.parse(dataRaw);
+function parseData(dataRaw: string): StorageDataType {
+    const data: StorageDataType = JSON.parse(dataRaw);
 
     ['value', 'expired'].map((key) => {
         if (!data.hasOwnProperty(key)) {
@@ -44,20 +51,20 @@ function parseData(dataRaw) {
     });
 
     if (!Date.parse(data.expired)) {
-        throw new Error(`storage has invalid the expired property`);
+        throw new Error('storage has invalid the expired property');
     }
 
     return data;
 }
 
-function getDefaultExpired() {
+function getDefaultExpired(): string {
     const now = new Date;
     now.setDate(now.getDate() + 1);
 
     return now.toString();
 }
 
-function isExpired(dateString) {
+function isExpired(dateString: string): boolean {
     const diffSeconds = (Date.parse(dateString) - Date.now()) / 1000;
 
     return Math.ceil(diffSeconds) <= 0;
