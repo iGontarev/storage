@@ -21,6 +21,7 @@
     "url": "https://github.com/iGontarev/storage/issues"
   },
   "pre-commit": [
+    "test",
     "lint"
   ],
   "homepage": "https://github.com/iGontarev/storage#readme",
